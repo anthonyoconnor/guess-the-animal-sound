@@ -1,0 +1,29 @@
+{
+  "manifest": {
+    "publishingInformation": {
+      "locales": {
+        "en-US": {
+          "summary": "Guess which animal made the sound that plays",
+          "examplePhrases": [
+            "Alexa open guess the animal sound"
+          ],
+          "name": "guess-the-animal-sound",
+          "description": "Alexa will play an animal sound and you have to guess which animal made it."
+        }
+      },
+      "isAvailableWorldwide": true,
+      "testingInstructions": "Alexa open guess the animal sound. Guess which animal made the sound Alexa played.",
+      "category": "KNOWLEDGE_AND_TRIVIA",
+      "distributionCountries": []
+    },
+    "apis": {
+      "custom": {
+        "endpoint": {
+          "sourceDir": "lambda/custom",
+          "uri": "ask-custom-guess-the-animal-sound-default"
+        }
+      }
+    },
+    "manifestVersion": "1.0"
+  }
+}
