@@ -1,9 +1,36 @@
 {
   "deploy_settings": {
     "default": {
-      "skill_id": "",
+      "skill_id": "amzn1.ask.skill.d1573fef-475c-410e-8837-3dc853f909cc",
       "was_cloned": false,
-      "merge": {}
+      "merge": {},
+      "resources": {
+        "manifest": {
+          "eTag": "f3610bb017da313dbbd62e74fd443a8e"
+        },
+        "interactionModel": {
+          "en-US": {
+            "eTag": "820bcc3f36c7743aecb405e6eb3b1854"
+          },
+          "en-CA": {
+            "eTag": "820bcc3f36c7743aecb405e6eb3b1854"
+          }
+        },
+        "lambda": [
+          {
+            "alexaUsage": [
+              "custom/default"
+            ],
+            "arn": "arn:aws:lambda:us-east-1:205332394851:function:ask-custom-guess-the-animal-sound-default",
+            "awsRegion": "us-east-1",
+            "codeUri": "lambda/custom",
+            "functionName": "ask-custom-guess-the-animal-sound-default",
+            "handler": "index.handler",
+            "revisionId": "7ae4c44e-de33-4161-ac4e-dee7f1809128",
+            "runtime": "nodejs8.10"
+          }
+        ]
+      }
     }
   }
 }

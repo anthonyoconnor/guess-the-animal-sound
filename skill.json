@@ -7,7 +7,15 @@
           "examplePhrases": [
             "Alexa open guess the animal sound"
           ],
-          "name": "guess-the-animal-sound",
+          "name": "Guess the animal sound",
+          "description": "Alexa will play an animal sound and you have to guess which animal made it."
+        },
+        "en-CA": {
+          "summary": "Guess which animal made the sound that plays",
+          "examplePhrases": [
+            "Alexa open guess the animal sound"
+          ],
+          "name": "Guess the animal sound",
           "description": "Alexa will play an animal sound and you have to guess which animal made it."
         }
       },

@@ -4,12 +4,13 @@
 const Alexa = require('ask-sdk-core');
 
 const skillName = 'Guess the animal sound';
+const finishMessage = 'Thanks for playing. Goodbye!';
 const LaunchRequestHandler = {
   canHandle(handlerInput) {
     return handlerInput.requestEnvelope.request.type === 'LaunchRequest';
   },
   handle(handlerInput) {
-    const speechText = 'Welcome to Guess the animal sound game. I will play a sound and you guess what animal made it.';
+    const speechText = 'Welcome to Guess the animal sound game. I will play a sound and you guess what animal made it. Are you ready to start?';
 
     return handlerInput.responseBuilder
       .speak(speechText)
@@ -77,6 +78,36 @@ const ErrorHandler = {
   },
 };
 
+
+const ContinueIntentHandler = {
+  canHandle(handlerInput) {
+      return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+          && handlerInput.requestEnvelope.request.intent.name === 'ContinueIntent';
+  },
+  handle(handlerInput) {
+
+      const tmp = "meow";
+      return handlerInput.responseBuilder
+          .speak(tmp)
+          .reprompt(tmp)
+          .withSimpleCard(skillName, 'What animal makes this sound?')
+          .getResponse();
+  },
+};
+
+const FinishIntentHandler = {
+  canHandle(handlerInput) {
+      return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+          && handlerInput.requestEnvelope.request.intent.name === 'FinishIntent';
+  },
+  handle(handlerInput) {
+      return handlerInput.responseBuilder
+          .speak(finishMessage)
+          .withSimpleCard(skillName, finishMessage)
+          .getResponse();
+  },
+};
+
 const skillBuilder = Alexa.SkillBuilders.custom();
 
 exports.handler = skillBuilder
@@ -84,7 +115,9 @@ exports.handler = skillBuilder
     LaunchRequestHandler,
     HelpIntentHandler,
     CancelAndStopIntentHandler,
-    SessionEndedRequestHandler
+    SessionEndedRequestHandler,
+    ContinueIntentHandler,
+    FinishIntentHandler
   )
   .addErrorHandlers(ErrorHandler)
   .lambda();
