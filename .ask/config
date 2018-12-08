@@ -6,14 +6,14 @@
       "merge": {},
       "resources": {
         "manifest": {
-          "eTag": "f3610bb017da313dbbd62e74fd443a8e"
+          "eTag": "d6e075f673b499a46c9da89024f54dc1"
         },
         "interactionModel": {
           "en-US": {
             "eTag": "820bcc3f36c7743aecb405e6eb3b1854"
           },
           "en-CA": {
-            "eTag": "820bcc3f36c7743aecb405e6eb3b1854"
+            "eTag": "e19a074bbe0e83a0caa08b3c4cd95e7d"
           }
         },
         "lambda": [
@@ -26,7 +26,7 @@
             "codeUri": "lambda/custom",
             "functionName": "ask-custom-guess-the-animal-sound-default",
             "handler": "index.handler",
-            "revisionId": "7ae4c44e-de33-4161-ac4e-dee7f1809128",
+            "revisionId": "2d757e6f-6cf7-415a-bb99-f85b427edb44",
             "runtime": "nodejs8.10"
           }
         ]

@@ -2,20 +2,33 @@
 /* eslint-disable  no-console */
 
 const Alexa = require('ask-sdk-core');
+const animalSounds = require('./animal-sounds');
 
 const skillName = 'Guess the animal sound';
 const finishMessage = 'Thanks for playing. Goodbye!';
+const soundQuestion = 'What animal makes this sound?';
 const LaunchRequestHandler = {
   canHandle(handlerInput) {
     return handlerInput.requestEnvelope.request.type === 'LaunchRequest';
   },
   handle(handlerInput) {
-    const speechText = 'Welcome to Guess the animal sound game. I will play a sound and you guess what animal made it. Are you ready to start?';
+
+    let next = getNextAnimal();
+    let nextSound = next.sound;
+    const nextAnimalQuestion = `${soundQuestion} ${nextSound}`;
+    const attributesManager = handlerInput.attributesManager;
+    const sessionAttributes = attributesManager.getSessionAttributes();
+
+    sessionAttributes.lastAnimal = next.name;
+
+    const greeting = `Welcome to Guess the animal sound game. I will play a sound and you guess what animal made it.`;
+
+    const fullResonse = `${greeting} <break time= "1s" />  ${nextAnimalQuestion}`;
 
     return handlerInput.responseBuilder
-      .speak(speechText)
-      .reprompt(speechText)
-      .withSimpleCard(skillName, speechText)
+      .speak(fullResonse)
+      .reprompt(nextAnimalQuestion)
+      .withSimpleCard(skillName, greeting)
       .getResponse();
   },
 };
@@ -27,11 +40,13 @@ const HelpIntentHandler = {
       && handlerInput.requestEnvelope.request.intent.name === 'AMAZON.HelpIntent';
   },
   handle(handlerInput) {
-    const speechText = 'I can help you!';
+    const speechText = 'Guess the animal that makes the sounds I play. If you are not sure just pick any animal you can think of.';
+    const speechRepeat = 'Say an animal.';
+
 
     return handlerInput.responseBuilder
       .speak(speechText)
-      .reprompt(speechText)
+      .reprompt(speechRepeat)
       .withSimpleCard(skillName, speechText)
       .getResponse();
   },
@@ -44,11 +59,10 @@ const CancelAndStopIntentHandler = {
         || handlerInput.requestEnvelope.request.intent.name === 'AMAZON.StopIntent');
   },
   handle(handlerInput) {
-    const speechText = 'Goodbye!';
 
     return handlerInput.responseBuilder
-      .speak(speechText)
-      .withSimpleCard(skillName, speechText)
+      .speak(finishMessage)
+      .withSimpleCard(skillName, finishMessage)
       .getResponse();
   },
 };
@@ -59,6 +73,7 @@ const SessionEndedRequestHandler = {
   },
   handle(handlerInput) {
     console.log(`Session ended with reason: ${handlerInput.requestEnvelope.request.reason}`);
+    console.log(`Session ended with reason: ${handlerInput.requestEnvelope.request}`);
 
     return handlerInput.responseBuilder.getResponse();
   },
@@ -78,35 +93,85 @@ const ErrorHandler = {
   },
 };
 
-
-const ContinueIntentHandler = {
-  canHandle(handlerInput) {
-      return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-          && handlerInput.requestEnvelope.request.intent.name === 'ContinueIntent';
-  },
-  handle(handlerInput) {
-
-      const tmp = "meow";
-      return handlerInput.responseBuilder
-          .speak(tmp)
-          .reprompt(tmp)
-          .withSimpleCard(skillName, 'What animal makes this sound?')
-          .getResponse();
-  },
-};
-
 const FinishIntentHandler = {
   canHandle(handlerInput) {
-      return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-          && handlerInput.requestEnvelope.request.intent.name === 'FinishIntent';
+    return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+      && handlerInput.requestEnvelope.request.intent.name === 'FinishIntent';
   },
   handle(handlerInput) {
-      return handlerInput.responseBuilder
-          .speak(finishMessage)
-          .withSimpleCard(skillName, finishMessage)
-          .getResponse();
+    return handlerInput.responseBuilder
+      .speak(finishMessage)
+      .withSimpleCard(skillName, finishMessage)
+      .getResponse();
   },
 };
+
+const DontKnowIntentHandler = {
+  canHandle(handlerInput) {
+    return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+      && handlerInput.requestEnvelope.request.intent.name === 'DontKnowIntent';
+  },
+  handle(handlerInput) {
+
+    const slots = handlerInput.requestEnvelope.request.intent.slots;
+
+    console.log('Slots', slots.animal.value);
+    let next = getNextAnimal();
+    let nextSound = next.sound;
+    const nextAnimalQuestion = `${soundQuestion} ${nextSound}`;
+    const attributesManager = handlerInput.attributesManager;
+    const sessionAttributes = attributesManager.getSessionAttributes();
+
+    let output = `That's ok. It was a ${slots.animal.value}. ${nextAnimalQuestion}`;
+
+    sessionAttributes.lastAnimal = next.name;
+
+    return handlerInput.responseBuilder
+      .speak(output)
+      .reprompt(nextAnimalQuestion)
+      .withSimpleCard(skillName, soundQuestion)
+      .getResponse();
+  },
+};
+
+
+const GuessIntentHandler = {
+  canHandle(handlerInput) {
+    return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+      && handlerInput.requestEnvelope.request.intent.name === 'GuessIntent';
+  },
+  handle(handlerInput) {
+
+    const slots = handlerInput.requestEnvelope.request.intent.slots;
+
+    console.log('Slots', slots.animal.value);
+    let next = getNextAnimal();
+    let nextSound = next.sound;
+    const nextAnimalQuestion = `${soundQuestion} ${nextSound}`;
+    const attributesManager = handlerInput.attributesManager;
+    const sessionAttributes = attributesManager.getSessionAttributes();
+
+    let lastAnimal = sessionAttributes.lastAnimal;
+
+    let output;
+    if (lastAnimal == slots.animal.value) {
+      console.log("Correct");
+      output = `Yes it was a ${slots.animal.value}. ${nextAnimalQuestion}`;
+    } else {
+      console.log(`Incorrect. It was a ${lastAnimal} and you said ${slots.animal.value}`);
+      output = `No it was a ${lastAnimal}. Try again. ${nextAnimalQuestion}`;
+    }
+
+    sessionAttributes.lastAnimal = next.name;
+
+    return handlerInput.responseBuilder
+      .speak(output)
+      .reprompt(nextAnimalQuestion)
+      .withSimpleCard(skillName, soundQuestion)
+      .getResponse();
+  },
+};
+
 
 const skillBuilder = Alexa.SkillBuilders.custom();
 
@@ -116,8 +181,17 @@ exports.handler = skillBuilder
     HelpIntentHandler,
     CancelAndStopIntentHandler,
     SessionEndedRequestHandler,
-    ContinueIntentHandler,
-    FinishIntentHandler
+    FinishIntentHandler,
+    GuessIntentHandler,
+    DontKnowIntentHandler
   )
   .addErrorHandlers(ErrorHandler)
   .lambda();
+
+
+function getNextAnimal() {
+  const index = Math.floor(Math.random() * animalSounds.length);
+
+  return animalSounds[index];
+
+}
