@@ -16,6 +16,14 @@
                     "samples": []
                 },
                 {
+                    "name": "AMAZON.YesIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.NoIntent",
+                    "samples": []
+                },
+                {
                     "name": "GuessIntent",
                     "slots": [
                         {
@@ -30,19 +38,11 @@
                         "It is an {animal}",
                         "Is it a {animal}",
                         "Is it an {animal}",
+                        "could be a {animal}",
+                        "could be an {animal}",
                         "a {animal}",
                         "an {animal}",
                         "{animal}"
-                    ]
-                },
-                {
-                    "name": "FinishIntent",
-                    "slots": [],
-                    "samples": [
-                        "close",
-                        "quit",
-                        "finish",
-                        "stop"
                     ]
                 },
                 {
@@ -53,6 +53,8 @@
                         "I do not know",
                         "do not know",
                         "Don't know",
+                        "I'm not sure",
+                        "I am not sure",
                         "not sure",
                         "what is it"
                     ]

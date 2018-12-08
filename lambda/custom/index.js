@@ -20,6 +20,8 @@ const LaunchRequestHandler = {
     const sessionAttributes = attributesManager.getSessionAttributes();
 
     sessionAttributes.lastAnimal = next.name;
+    sessionAttributes.correctAnswers = 0;
+    sessionAttributes.wrongAnswers = 0;
 
     const greeting = `Welcome to Guess the animal sound game. I will play a sound and you guess what animal made it.`;
 
@@ -42,7 +44,6 @@ const HelpIntentHandler = {
   handle(handlerInput) {
     const speechText = 'Guess the animal that makes the sounds I play. If you are not sure just pick any animal you can think of.';
     const speechRepeat = 'Say an animal.';
-
 
     return handlerInput.responseBuilder
       .speak(speechText)
@@ -87,8 +88,7 @@ const ErrorHandler = {
     console.log(`Error handled: ${error.message}`);
 
     return handlerInput.responseBuilder
-      .speak('Sorry, I can\'t understand the command. Please say again.')
-      .reprompt('Sorry, I can\'t understand the command. Please say again.')
+      .speak('Sorry, something went wrong. The game is over. Try playing again.')
       .getResponse();
   },
 };
@@ -113,16 +113,13 @@ const DontKnowIntentHandler = {
   },
   handle(handlerInput) {
 
-    const slots = handlerInput.requestEnvelope.request.intent.slots;
-
-    console.log('Slots', slots.animal.value);
     let next = getNextAnimal();
     let nextSound = next.sound;
     const nextAnimalQuestion = `${soundQuestion} ${nextSound}`;
     const attributesManager = handlerInput.attributesManager;
     const sessionAttributes = attributesManager.getSessionAttributes();
 
-    let output = `That's ok. It was a ${slots.animal.value}. ${nextAnimalQuestion}`;
+    let output = `That's ok. It was a ${sessionAttributes.lastAnimal}. ${nextAnimalQuestion}`;
 
     sessionAttributes.lastAnimal = next.name;
 
@@ -152,22 +149,71 @@ const GuessIntentHandler = {
     const sessionAttributes = attributesManager.getSessionAttributes();
 
     let lastAnimal = sessionAttributes.lastAnimal;
+    sessionAttributes.lastAnimal = next.name;
 
     let output;
     if (lastAnimal == slots.animal.value) {
       console.log("Correct");
       output = `Yes it was a ${slots.animal.value}. ${nextAnimalQuestion}`;
+      sessionAttributes.correctAnswers++;
     } else {
       console.log(`Incorrect. It was a ${lastAnimal} and you said ${slots.animal.value}`);
-      output = `No it was a ${lastAnimal}. Try again. ${nextAnimalQuestion}`;
+      output = `No it was a ${lastAnimal}. Let's try another one. ${nextAnimalQuestion}`;
+      sessionAttributes.wrongAnswers++;
     }
 
-    sessionAttributes.lastAnimal = next.name;
+    //TODO: handle this correectly.
+
+    // if(sessionAttributes.correctAnswers >= 5) {
+    //   return handlerInput.responseBuilder
+    //   .speak("You have gotten 5 right, do you want to keep playing?")
+    //   .reprompt("do you want to keep playing?")
+    //   .withSimpleCard(skillName, "do you want to keep playing?")
+    //   .getResponse();
+    // }
+
+    // if(sessionAttributes.wrongAnswers >= 5) {
+    //   return handlerInput.responseBuilder
+    //   .speak("You have gotten 5 wrong, do you want to keep playing?")
+    //   .reprompt("do you want to keep playing?")
+    //   .withSimpleCard(skillName, "do you want to keep playing?")
+    //   .getResponse();
+    // }
 
     return handlerInput.responseBuilder
       .speak(output)
       .reprompt(nextAnimalQuestion)
       .withSimpleCard(skillName, soundQuestion)
+      .getResponse();
+  },
+};
+
+const YesIntentHandler = {
+  canHandle(handlerInput) {
+    return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+      && handlerInput.requestEnvelope.request.intent.name === 'AMAZON.YesIntent';
+  },
+  handle(handlerInput) {
+    //TODO: Handle correctly
+    return handlerInput.responseBuilder
+      .speak("great. what animal is next")
+      .reprompt("what animal is next")
+      .withSimpleCard(skillName, "what animal is next")
+      .getResponse();
+  },
+};
+
+
+const NoIntentHandler = {
+  canHandle(handlerInput) {
+    return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+      && handlerInput.requestEnvelope.request.intent.name === 'AMAZON.NoIntent';
+  },
+  handle(handlerInput) {
+    //TODO: Handle correctly
+    return handlerInput.responseBuilder
+      .speak('you did great. Thanks for playing')
+      .withSimpleCard(skillName, finishMessage)
       .getResponse();
   },
 };
@@ -183,6 +229,8 @@ exports.handler = skillBuilder
     SessionEndedRequestHandler,
     FinishIntentHandler,
     GuessIntentHandler,
+    YesIntentHandler,
+    NoIntentHandler,
     DontKnowIntentHandler
   )
   .addErrorHandlers(ErrorHandler)

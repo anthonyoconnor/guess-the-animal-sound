@@ -13,7 +13,7 @@
             "eTag": "820bcc3f36c7743aecb405e6eb3b1854"
           },
           "en-CA": {
-            "eTag": "e19a074bbe0e83a0caa08b3c4cd95e7d"
+            "eTag": "48b192e12a838992c301545a555985be"
           }
         },
         "lambda": [
@@ -26,7 +26,7 @@
             "codeUri": "lambda/custom",
             "functionName": "ask-custom-guess-the-animal-sound-default",
             "handler": "index.handler",
-            "revisionId": "2d757e6f-6cf7-415a-bb99-f85b427edb44",
+            "revisionId": "24a95b5f-7bb4-462a-8238-c4fa453fc155",
             "runtime": "nodejs8.10"
           }
         ]
