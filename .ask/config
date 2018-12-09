@@ -6,7 +6,7 @@
       "merge": {},
       "resources": {
         "manifest": {
-          "eTag": "3df9488bfc8555dee93595e2e54fe016"
+          "eTag": "6795a0efca251b36be6a7ce8b6ea42ec"
         },
         "interactionModel": {
           "en-US": {
@@ -35,7 +35,7 @@
             "codeUri": "lambda/custom",
             "functionName": "ask-custom-guess-the-animal-sound-default",
             "handler": "index.handler",
-            "revisionId": "04f882b9-deb0-4151-8b5f-9b07fafb74ab",
+            "revisionId": "7d9d0ad9-9777-41d9-9265-388fa22ad1d6",
             "runtime": "nodejs8.10"
           }
         ]
