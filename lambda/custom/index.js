@@ -151,7 +151,7 @@ function getNextStep(handlerInput, dontKnow) {
 
   let output;
   if (dontKnow) {
-    output = `It was a ${sessionAttributes.lastAnimal}.`;
+    output = `It was a ${sessionAttributes.lastAnimal}. `;
     sessionAttributes.wrongAnswers++;
   } else if (lastAnimal == slots.animal.value) {
     sessionAttributes.correctAnswers++;
