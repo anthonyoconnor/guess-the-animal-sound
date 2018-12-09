@@ -1,0 +1,157 @@
+{
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "guess the animal sound",
+            "intents": [
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.YesIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.NoIntent",
+                    "samples": []
+                },
+                {
+                    "name": "GuessIntent",
+                    "slots": [
+                        {
+                            "name": "animal",
+                            "type": "ANIMALS"
+                        }
+                    ],
+                    "samples": [
+                        "it's a {animal}",
+                        "it's an {animal}",
+                        "It is a {animal}",
+                        "It is an {animal}",
+                        "Is it a {animal}",
+                        "Is it an {animal}",
+                        "could be a {animal}",
+                        "could be an {animal}",
+                        "a {animal}",
+                        "an {animal}",
+                        "{animal}"
+                    ]
+                },
+                {
+                    "name": "DontKnowIntent",
+                    "slots": [],
+                    "samples": [
+                        "I don't know",
+                        "I do not know",
+                        "do not know",
+                        "Don't know",
+                        "I'm not sure",
+                        "I am not sure",
+                        "not sure",
+                        "what is it"
+                    ]
+                }
+            ],
+            "types": [
+                {
+                    "name": "ANIMALS",
+                    "values": [
+                        {
+                            "name": {
+                                "value": "bear"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "bird"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "cat"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "chicken"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "crow"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "dog"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "elephant"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "horse"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "lion"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "monkey"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "monkeys"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "rat"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "raven"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "rooster"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "sheep"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "turkey"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "wolf"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

@@ -6,13 +6,22 @@
       "merge": {},
       "resources": {
         "manifest": {
-          "eTag": "d6e075f673b499a46c9da89024f54dc1"
+          "eTag": "3df9488bfc8555dee93595e2e54fe016"
         },
         "interactionModel": {
           "en-US": {
-            "eTag": "820bcc3f36c7743aecb405e6eb3b1854"
+            "eTag": "48b192e12a838992c301545a555985be"
           },
           "en-CA": {
+            "eTag": "48b192e12a838992c301545a555985be"
+          },
+          "en-GB": {
+            "eTag": "48b192e12a838992c301545a555985be"
+          },
+          "en-AU": {
+            "eTag": "48b192e12a838992c301545a555985be"
+          },
+          "en-IN": {
             "eTag": "48b192e12a838992c301545a555985be"
           }
         },
@@ -26,7 +35,7 @@
             "codeUri": "lambda/custom",
             "functionName": "ask-custom-guess-the-animal-sound-default",
             "handler": "index.handler",
-            "revisionId": "0e0ddc52-ae11-4520-9711-e528e23b6447",
+            "revisionId": "04f882b9-deb0-4151-8b5f-9b07fafb74ab",
             "runtime": "nodejs8.10"
           }
         ]

@@ -7,8 +7,29 @@
           "examplePhrases": [
             "Alexa open guess the animal sound"
           ],
+          "keywords": [
+            "kid and animals sounds",
+            "animal sounds",
+            "animal sound game",
+            "animal sounds game",
+            "sounds game",
+            "animal sound games",
+            "animal game",
+            "animal sound fun",
+            "animal sounds fun",
+            "sounds animals make",
+            "how animals sound",
+            "guess the sound",
+            "guess the animal",
+            "guess the animal sound",
+            "guess the animal sounds",
+            "name the animal sound",
+            "what animal made this sound",
+            "what animal makes this sound",
+            "which animal made this sound"
+          ],
           "name": "Guess the animal sound",
-          "description": "Alexa will play an animal sound and you have to guess which animal made it."
+          "description": "Alexa will play an animal sound and you have to guess which animal made it. \n\nLot's of fun for kids to try naming which animal made each sound. Lot's of animals included like bears, cats, dogs, lions and more.  \n\nFeedback and suggestions are welcome at digitallyuncommon@gmail.com. If you would like more sounds added send me an email. Checkout https://digitallyuncommon.com to get notified about other Alexa skills and updates."
         },
         "en-CA": {
           "summary": "Guess which animal made the sound that plays",
@@ -16,12 +37,36 @@
             "Alexa open guess the animal sound"
           ],
           "name": "Guess the animal sound",
-          "description": "Alexa will play an animal sound and you have to guess which animal made it."
+          "description": "Alexa will play an animal sound and you have to guess which animal made it. \n\nLot's of fun for kids to try naming which animal made each sound. Lot's of animals included like bears, cats, dogs, lions and more. \n\nFeedback and suggestions are welcome at digitallyuncommon@gmail.com. If you would like more sounds added send me an email. Checkout https://digitallyuncommon.com to get notified about other Alexa skills and updates."
+        },
+        "en-GB": {
+          "summary": "Guess which animal made the sound that plays",
+          "examplePhrases": [
+            "Alexa open guess the animal sound"
+          ],
+          "name": "Guess the animal sound",
+          "description": "Alexa will play an animal sound and you have to guess which animal made it. \n\nLot's of fun for kids to try naming which animal made each sound. Lot's of animals included like bears, cats, dogs, lions and more. \n\nFeedback and suggestions are welcome at digitallyuncommon@gmail.com. If you would like more sounds added send me an email. Checkout https://digitallyuncommon.com to get notified about other Alexa skills and updates."
+        },
+        "en-IN": {
+          "summary": "Guess which animal made the sound that plays",
+          "examplePhrases": [
+            "Alexa open guess the animal sound"
+          ],
+          "name": "Guess the animal sound",
+          "description": "Alexa will play an animal sound and you have to guess which animal made it. \n\nLot's of fun for kids to try naming which animal made each sound. Lot's of animals included like bears, cats, dogs, lions and more. \n\nFeedback and suggestions are welcome at digitallyuncommon@gmail.com. If you would like more sounds added send me an email. Checkout https://digitallyuncommon.com to get notified about other Alexa skills and updates."
+        },
+        "en-AU": {
+          "summary": "Guess which animal made the sound that plays",
+          "examplePhrases": [
+            "Alexa open guess the animal sound"
+          ],
+          "name": "Guess the animal sound",
+          "description": "Alexa will play an animal sound and you have to guess which animal made it. \n\nLot's of fun for kids to try naming which animal made each sound. Lot's of animals included like bears, cats, dogs, lions and more. \n\nFeedback and suggestions are welcome at digitallyuncommon@gmail.com. If you would like more sounds added send me an email. Checkout https://digitallyuncommon.com to get notified about other Alexa skills and updates."
         }
       },
       "isAvailableWorldwide": true,
-      "testingInstructions": "Alexa open guess the animal sound. Guess which animal made the sound Alexa played.",
-      "category": "KNOWLEDGE_AND_TRIVIA",
+      "testingInstructions": "Launch: Alexa open guess the animal sound. Instructions. Alexa will play an animal sound. You must guess which animal made the sound. After 5 tries Alexa will prompt the user to see if they want to keep playing or not. Animal sounds included are bear, bird, cat,chicken, crow, dog, elephant, horse, lion, monkey, rat, raven, rooster, sheep, turkey and wolf",
+      "category": "CHILDRENS_GAMES",
       "distributionCountries": []
     },
     "apis": {
@@ -32,6 +77,20 @@
         }
       }
     },
-    "manifestVersion": "1.0"
+    "manifestVersion": "1.0",
+    "privacyAndCompliance": {
+      "allowsPurchases": false,
+      "usesPersonalInfo": false,
+      "isChildDirected": true,
+      "isExportCompliant": true,
+      "containsAds": false,
+      "locales": {
+        "en-US": {},
+        "en-CA": {},
+        "en-GB": {},
+        "en-IN": {},
+        "en-AU": {}
+      }
+    }
   }
 }
