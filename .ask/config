@@ -26,7 +26,7 @@
             "codeUri": "lambda/custom",
             "functionName": "ask-custom-guess-the-animal-sound-default",
             "handler": "index.handler",
-            "revisionId": "24a95b5f-7bb4-462a-8238-c4fa453fc155",
+            "revisionId": "0e0ddc52-ae11-4520-9711-e528e23b6447",
             "runtime": "nodejs8.10"
           }
         ]

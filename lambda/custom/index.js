@@ -23,7 +23,7 @@ const LaunchRequestHandler = {
     sessionAttributes.correctAnswers = 0;
     sessionAttributes.wrongAnswers = 0;
 
-    const greeting = `Welcome to Guess the animal sound game. I will play a sound and you guess what animal made it.`;
+    const greeting = `Welcome to Guess the animal sound. I will play a sound and you guess what animal made it.`;
 
     const fullResonse = `${greeting} <break time= "1s" />  ${nextAnimalQuestion}`;
 
@@ -60,11 +60,7 @@ const CancelAndStopIntentHandler = {
         || handlerInput.requestEnvelope.request.intent.name === 'AMAZON.StopIntent');
   },
   handle(handlerInput) {
-
-    return handlerInput.responseBuilder
-      .speak(finishMessage)
-      .withSimpleCard(skillName, finishMessage)
-      .getResponse();
+    return getEndGameHandler(handlerInput);
   },
 };
 
@@ -76,7 +72,17 @@ const SessionEndedRequestHandler = {
     console.log(`Session ended with reason: ${handlerInput.requestEnvelope.request.reason}`);
     console.log(`Session ended with reason: ${handlerInput.requestEnvelope.request}`);
 
-    return handlerInput.responseBuilder.getResponse();
+    return getEndGameHandler(handlerInput);
+  },
+};
+
+const FinishIntentHandler = {
+  canHandle(handlerInput) {
+    return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+      && handlerInput.requestEnvelope.request.intent.name === 'FinishIntent';
+  },
+  handle(handlerInput) {
+    return getEndGameHandler(handlerInput);
   },
 };
 
@@ -89,22 +95,26 @@ const ErrorHandler = {
 
     return handlerInput.responseBuilder
       .speak('Sorry, something went wrong. The game is over. Try playing again.')
+      .withSimpleCard(skillName, "Sorry something is not working correctly.")
       .getResponse();
   },
 };
 
-const FinishIntentHandler = {
-  canHandle(handlerInput) {
-    return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-      && handlerInput.requestEnvelope.request.intent.name === 'FinishIntent';
-  },
-  handle(handlerInput) {
-    return handlerInput.responseBuilder
-      .speak(finishMessage)
-      .withSimpleCard(skillName, finishMessage)
-      .getResponse();
-  },
-};
+
+function getEndGameHandler(handlerInput) {
+
+  const attributesManager = handlerInput.attributesManager;
+  const sessionAttributes = attributesManager.getSessionAttributes();
+
+  let total = sessionAttributes.correctAnswers + sessionAttributes.wrongAnswers;
+
+  const scoreMessage = `You got ${sessionAttributes.correctAnswers} correct out of ${total}. Try for higher next time.`
+  const finalMessage = `${scoreMessage} ${finishMessage}`;
+  return handlerInput.responseBuilder
+    .speak(finalMessage)
+    .withSimpleCard(skillName, finalMessage)
+    .getResponse();
+}
 
 const DontKnowIntentHandler = {
   canHandle(handlerInput) {
@@ -112,22 +122,7 @@ const DontKnowIntentHandler = {
       && handlerInput.requestEnvelope.request.intent.name === 'DontKnowIntent';
   },
   handle(handlerInput) {
-
-    let next = getNextAnimal();
-    let nextSound = next.sound;
-    const nextAnimalQuestion = `${soundQuestion} ${nextSound}`;
-    const attributesManager = handlerInput.attributesManager;
-    const sessionAttributes = attributesManager.getSessionAttributes();
-
-    let output = `That's ok. It was a ${sessionAttributes.lastAnimal}. ${nextAnimalQuestion}`;
-
-    sessionAttributes.lastAnimal = next.name;
-
-    return handlerInput.responseBuilder
-      .speak(output)
-      .reprompt(nextAnimalQuestion)
-      .withSimpleCard(skillName, soundQuestion)
-      .getResponse();
+    return getNextStep(handlerInput, true);
   },
 };
 
@@ -138,55 +133,58 @@ const GuessIntentHandler = {
       && handlerInput.requestEnvelope.request.intent.name === 'GuessIntent';
   },
   handle(handlerInput) {
-
-    const slots = handlerInput.requestEnvelope.request.intent.slots;
-
-    console.log('Slots', slots.animal.value);
-    let next = getNextAnimal();
-    let nextSound = next.sound;
-    const nextAnimalQuestion = `${soundQuestion} ${nextSound}`;
-    const attributesManager = handlerInput.attributesManager;
-    const sessionAttributes = attributesManager.getSessionAttributes();
-
-    let lastAnimal = sessionAttributes.lastAnimal;
-    sessionAttributes.lastAnimal = next.name;
-
-    let output;
-    if (lastAnimal == slots.animal.value) {
-      console.log("Correct");
-      output = `Yes it was a ${slots.animal.value}. ${nextAnimalQuestion}`;
-      sessionAttributes.correctAnswers++;
-    } else {
-      console.log(`Incorrect. It was a ${lastAnimal} and you said ${slots.animal.value}`);
-      output = `No it was a ${lastAnimal}. Let's try another one. ${nextAnimalQuestion}`;
-      sessionAttributes.wrongAnswers++;
-    }
-
-    //TODO: handle this correectly.
-
-    // if(sessionAttributes.correctAnswers >= 5) {
-    //   return handlerInput.responseBuilder
-    //   .speak("You have gotten 5 right, do you want to keep playing?")
-    //   .reprompt("do you want to keep playing?")
-    //   .withSimpleCard(skillName, "do you want to keep playing?")
-    //   .getResponse();
-    // }
-
-    // if(sessionAttributes.wrongAnswers >= 5) {
-    //   return handlerInput.responseBuilder
-    //   .speak("You have gotten 5 wrong, do you want to keep playing?")
-    //   .reprompt("do you want to keep playing?")
-    //   .withSimpleCard(skillName, "do you want to keep playing?")
-    //   .getResponse();
-    // }
-
-    return handlerInput.responseBuilder
-      .speak(output)
-      .reprompt(nextAnimalQuestion)
-      .withSimpleCard(skillName, soundQuestion)
-      .getResponse();
+    return getNextStep(handlerInput, false);
   },
 };
+
+function getNextStep(handlerInput, dontKnow) {
+  const slots = handlerInput.requestEnvelope.request.intent.slots;
+
+  let next = getNextAnimal();
+  let nextSound = next.sound;
+  const nextAnimalQuestion = `${soundQuestion} ${nextSound}`;
+  const attributesManager = handlerInput.attributesManager;
+  const sessionAttributes = attributesManager.getSessionAttributes();
+
+  let lastAnimal = sessionAttributes.lastAnimal;
+  sessionAttributes.lastAnimal = next.name;
+
+  let output;
+  if (dontKnow) {
+    output = `It was a ${sessionAttributes.lastAnimal}.`;
+    sessionAttributes.wrongAnswers++;
+  } else if (lastAnimal == slots.animal.value) {
+    sessionAttributes.correctAnswers++;
+
+    output = `Yes it was a ${slots.animal.value}. `;
+  } else {
+    console.log(`Incorrect. It was a ${lastAnimal} and you said ${slots.animal.value}`);
+    sessionAttributes.wrongAnswers++;
+
+    output = `You said ${slots.animal.value}? No it was a ${lastAnimal}. `;
+  }
+
+  let total = sessionAttributes.correctAnswers + sessionAttributes.wrongAnswers;
+
+  let cardMessage = `You've gotten ${sessionAttributes.correctAnswers} correct out of ${total}.`
+
+  let reprompt;
+  if (total % 5 == 0) {
+    const keepPlaying = "Do you want to keep playing?";
+    output += `${cardMessage} ${keepPlaying}`;
+    cardMessage += " Do you want to keep playing? Yes or No."
+    reprompt = keepPlaying;
+  } else {
+    output += nextAnimalQuestion;
+    reprompt = nextAnimalQuestion;
+  }
+
+  return handlerInput.responseBuilder
+    .speak(output)
+    .reprompt(reprompt)
+    .withSimpleCard(skillName, cardMessage)
+    .getResponse();
+}
 
 const YesIntentHandler = {
   canHandle(handlerInput) {
@@ -194,11 +192,19 @@ const YesIntentHandler = {
       && handlerInput.requestEnvelope.request.intent.name === 'AMAZON.YesIntent';
   },
   handle(handlerInput) {
-    //TODO: Handle correctly
+
+    let next = getNextAnimal();
+    let nextSound = next.sound;
+    const nextAnimalQuestion = `${soundQuestion} ${nextSound}`;
+    const attributesManager = handlerInput.attributesManager;
+    const sessionAttributes = attributesManager.getSessionAttributes();
+
+    sessionAttributes.lastAnimal = next.name;
+
     return handlerInput.responseBuilder
-      .speak("great. what animal is next")
-      .reprompt("what animal is next")
-      .withSimpleCard(skillName, "what animal is next")
+      .speak(nextAnimalQuestion)
+      .reprompt(nextAnimalQuestion)
+      .withSimpleCard(skillName, soundQuestion)
       .getResponse();
   },
 };
@@ -210,11 +216,7 @@ const NoIntentHandler = {
       && handlerInput.requestEnvelope.request.intent.name === 'AMAZON.NoIntent';
   },
   handle(handlerInput) {
-    //TODO: Handle correctly
-    return handlerInput.responseBuilder
-      .speak('you did great. Thanks for playing')
-      .withSimpleCard(skillName, finishMessage)
-      .getResponse();
+    return getEndGameHandler(handlerInput);
   },
 };
 
@@ -241,5 +243,4 @@ function getNextAnimal() {
   const index = Math.floor(Math.random() * animalSounds.length);
 
   return animalSounds[index];
-
 }

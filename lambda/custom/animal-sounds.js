@@ -204,7 +204,7 @@ const sounds = [
         "sound": `<audio src='soundbank://soundlibrary/animals/amzn_sfx_monkey_chimp_01'/>`
     },
     {
-        "name": "monkeys",
+        "name": "monkey",
         "sound": `<audio src='soundbank://soundlibrary/animals/amzn_sfx_monkeys_chatter_01'/>`
     },
     {
